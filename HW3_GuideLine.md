@@ -86,3 +86,45 @@ We can leave the entire dataset and problem as a project choice. I plan to give 
 
 I think a dataset of 2G maybe manageable, which means we will take about 3 types of sound. Can you experiment with it and see how long it will take to run RNN, LSTM on it? If you need more space on Erdos, let me know.
 
+
+
+## Q&A
+
+```bash
+!which is python
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Feature Extraction
+
+
+
+### 
+
+Step 1: Load Dataset
+
+Step 2: Make Dataset Iterable
+
+Step 3: Create Model Class
+
+Step 4: Instantiate Model Class
+
+Step 5: Instantiate Loss Class
+
+Step 6: Instantiate Optimizer Class
+
+Step 7: Train Model
