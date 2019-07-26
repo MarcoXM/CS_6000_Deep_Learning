@@ -1,0 +1,265 @@
+\documentclass[12pt,epsf]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{framed}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{blkarray}
+\usepackage{enumerate}
+\usepackage{verbatim}
+
+\newlength{\toppush}
+\setlength{\toppush}{2\headheight}
+\addtolength{\toppush}{\headsep}
+
+  \setlength{\parindent}{0pt}
+  \setlength{\parskip}{\baselineskip}
+
+
+\def\subjnum{CISC 6000}
+\def\subjname{Deep Learning}
+
+
+\def\doheading#1#2#3{\vfill\eject\vspace*{-\toppush}%
+  %\vbox{\hbox to\textwidth{{\bf} \subjnum: \subjname \hfil Prof. Yijun Zhao}%
+  %  \hbox to\textwidth{{\bf} Fordham University, Fall 2017 \hfil#3\strut}%
+   \vbox{\hbox to\textwidth{{\bf} \subjnum: \subjname \hfil #3\strut}%
+   \hbox to\textwidth{{\bf} Fordham University, Fall 2019 \hfil Prof. Yijun Zhao}%
+   \vspace{1mm}
+    \hrule}}
+
+
+
+%\documentclass[14pt, x11names, dvipsnames, usenames]{beamer}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{-.2in}
+\setlength{\evensidemargin}{-.5in}
+\setlength{\topmargin}{-0.8in}
+%\usepackage{graphicx}
+%\usepackage{mdframed}
+%\usepackage{framed}
+\newcommand{\tf}{\dotfill \makebox[0in][l]{\hspace{1em}T\hspace{1em}F}}
+%\newcommand{\mod}{{\rm mod}\ }
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newcommand{\htitle}[1]{\vspace*{0ex plus 1ex minus .2ex}%
+\begin{center}
+{\large\bf #1}
+\end{center}} 
+
+
+
+\begin{document}
+
+ 
+%\vspace{0.5in}
+%\begin{tabbing}
+%xxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxx \= xxxxxxxxxxxxxxxxxxxxxxxxxxx \kill
+%\> Student Name: 
+%\>  \underline{\makebox[3in]{}} \\  \\ \\
+%\end{tabbing}
+\doheading{2}{title}{ }
+
+\htitle{Assignment 1 : Neural Network }
+\vspace{-10mm}
+\begin{center} \textit{\textbf{Due: 9/30}}  \end{center}
+\vspace{-4mm}
+
+\framebox{
+\parbox{6.5in}{
+\vspace{2mm}
+\centering{\bf Submission Instructions}
+\begin{itemize}
+%\item \bf{Your program must run ... {\color{red} need to change this part}}
+%\vspace{-2mm}
+%\item \bf{Create a README file, with simple, clear instructions on how to compile and run your code}
+%\vspace{-2mm}
+\item Zip all your files (code, README, written answers, etc.) in a zip file named $\{firstname\}\_\{lastname\}\_CS6000\_HW1.zip$ and upload it to Blackboard\\
+\item Submit your model's prediction in Kaggle\\
+
+\end{itemize}
+}
+}
+
+
+This assignment is split into two sections: Math and Neural Network. The first one entirely consists of written, analysis questions, whereas the second is primarily coding and implementation focused. If you get stuck on the first section, you can always work on the second. If you ever get stuck along the way, please come to Office Hours so that the TA can support you.
+
+\begin{enumerate}
+
+\item Chain Rule Practice (20 points)
+
+\begin{enumerate}
+
+\item Apply chain rule to differentiate the following functions:
+\begin{itemize}
+\item $y = \sqrt{13x^2-5x+8}$\\
+\item $y = log( 4 + (x-1)^2)$\\
+\item $y = \frac{ e^{-(x+5)}}{k!e^{3x}}$ for some integer $k$\\
+\end{itemize}
+%\item Assume that $h(x) = f(g^2(x))$, where both $f$ and $g$ are differentiable functions. If $g(-1) = -2$, $g'(-1) = 3$, and $f'(4) = 4$, what is the value of $h'(-1)$?\\
+\item Calculate one forward (square boxes) and backward (oval boxes) iteration for the given network:\\
+
+\vspace*{-2mm}
+
+\hspace*{-10mm} \includegraphics [trim=50 300 0 60,clip,width=1\textwidth]{backprop.pdf}
+\end{enumerate}
+
+ 
+\item (5 points) A fully connected Neural Network has $L = 2$, $d(0) = 4$, $d(1) = 2$, $d(2) = 1$. If only
+products of the form $w^{(l)}_{ij} x^{(l-1)}_i, w^{(l)}_{ij}\delta^{(l)}_j$, and $x^{(l-1)}_i\delta^{(l)}_j$
+count as operations (even for $x^{(l-1)}_0 = 1)$, without counting anything else, what is the 
+total number of operations in a single iteration of back-propagation
+(using SGD on one data point)?\\
+
+%answer: 28
+ 
+%\item (20 points) Let us call every ``node" in a Neural Network a unit, whether that unit is an input variable or a neuron in one of the layers. Consider a Neural Network that has 12 input units (the constant $x^{(0)}_0$ is counted here as a unit), one output unit, and 40 hidden units (each $x^{(l)}_0$) is also counted as a unit). The hidden units can be arranged in any number of layers $ l = 1, \dots , L-1$, and each layer is fully connected to the layer above it.
+%\begin{enumerate}
+%\item Compute the minimum possible number of weights such a network can have.
+%\item If we restrain the network to have only 2 hidden layers, compute the maximum possible number of weights such a network can have. \\
+%\end{enumerate}
+
+%answer: 52, 653
+ 
+\item (75 points) Power of Neural Network (MLP)
+
+In this exercise, you will implement a two-layer neural network in Tensorflow 2.0 or Keras. You will use the data-set MNIST data-set to classify digits from ``0" to ``9". General speaking, it is ten-class classification problem.
+
+Your network will have two layers with 784, 256 units in hidden layer 1 and 2 respectively. The output layer will have 10 units representing the probabilities of input being ``0" , ``9" or other digit. 
+
+For example, an output vector of [$\hat{y}_{0}$, $\hat{y}_{1}$,....$\hat{y}_{9}$] represents a probability of being digit ``0" to digit ``9". Your model is correct if the output unit with the \textit{highest} probability corresponds to the image test label. 
+
+
+
+%answer: 52, 653
+%answer: 52, 653
+
+
+
+
+
+Your mission:
+
+%\vspace*{-12mm}
+\begin{figure} [!h]
+\centering
+%\hspace*{-10mm} \includegraphics [scale= 0.5]{nn1_new.png}
+ \includegraphics [trim=0 0 0 0,clip,width=0.8\textwidth]{nn1_new.png}
+
+\end{figure}
+
+\begin{enumerate}
+
+%\item In order to train your neural network using the backpropagation algorithm from the lecture, you will need to compute a gradient for each backward pass/parameter update. In other words, you need to find how the loss changes with respect to our network's parameters ($w_{ij}, b_j$). Since the model involves multiple layers, we can't directly take the derivate of the loss $L(x)$ with respect to $w_{ij}$ or $b_j$ directly. Using the chain rule, derive an expression for \scalebox{1.5}{$\frac{\partial L}{\partial w_{ij}}$} and \scalebox{1.5}{$\frac{\partial L}{\partial b_j}$}. Your expression should be a product of partial derivatives.\\
+%\item Fill in the missing functions in the provided ipython notebook.
+
+\item (25) Build your own neural network :  
+
+Cross - entropy as our objective function:
+\begin{equation}
+  \label{eq:twoentropy}
+E_{\mbox{\tiny entropy}} = -\sum_{c=1}^C  y \ln \hat{y}
+\end{equation}
+\begin{enumerate}
+
+\item Building your own Neural Net( Only Numpy can be used in modeling) and use the model to predict the class of test file mnist.test.npy . 
+\item Save the prediction in CSV file and submit it in your Kaggle competition. The sample submission CSV file has been provided in Kaggle . 
+
+\end{enumerate}
+
+%answer:   
+
+
+
+\item (50)Build neural network with Package( Tensorflow or Keras): (10)
+
+In this part, please build a neural network with same architecture (784, 256,10) above. In part (b) default optimizer should be sgd, activation function should be tanh and learning rate should be 0.01 and validation set should be 20 \% of training data. 
+
+\begin{enumerate}
+
+\item Regulation is a critical method to prevent over-fitting problem. Dropout is a regularization technique that has been widely used in deep learning. During training, dropout randomly sets units in the hidden layer h to zero with probability $p_{drop}$ (dropping different units each minibatch).
+
+1. Why should we apply dropout during training but not during evaluation? (5)
+
+2. Initialize neural networks named nn\_withdrop and nn\_withoutdrop.  Try to find the best dropout probability from $P\in\{0.1,0.2,0.3,0.4,0.5\}$  within 50 epochs in the nn\_withdrop. (10)
+\begin{itemize}
+\item	What is the best dropout value of your model and compare the classification performance with the model have no Dropout. 
+\item  For both of models, showing the overall accuracy score and accuracy of each class.
+\end{itemize}
+
+\item Batch Normalization: It is called because during training, we normalize each layer's inputs by using the mean and variance of the values in the current batch.
+
+1.  Why Batch Normalization can improve model speed and performance? (5)
+
+2. Based on the model with no dropout, create identical neural networks with and without batch normalization named nn\_withbn and nn\_withoutbn to compare in 50 epochs (10)
+
+\begin{itemize}
+\item  The accuracy (overall and each class)
+\item  Total running time
+\item  Loss ( training loss and validation loss).
+\item  Plotting the learning curve of both models.
+\end{itemize}
+
+
+ 
+\item Optimization matters! Different optimizing rule would generate A wide spectrum of results. Try to create an identical neural network without dropout and batch normalization. Try to use 4 optimizer : Adam, SGD, Momentum, RMSprop with same learning rate 0.01 and training 50 epochs.
+
+\begin{itemize}
+	\item  What is the best optimizer for the network   (5)
+	\item  Plotting the learning curve of these 4 methods. (5)
+\end{itemize}
+
+\end{enumerate}
+
+For your Tensorflow or Keras modeling, before running your code please using the following Python code to let your result reproducible:
+
+\begin{verbatim}
+def seed_everything(SEED):
+    np.random.seed(SEED)
+    tf.set_random_seed(SEED)
+    random.seed(SEED)
+    
+seed_everything(6300)
+\end{verbatim}
+
+And please run the code above before you initialize your models!
+
+
+%\item Discuss effective methods to select the Hyperparameters. Optimer hyperparameters like learning rate, mini-batch size and number of iteration. And model hyperparameter like the number of hidden layers/units. You are allowed to discuss among your classmates or consult Internet resources for this question, but you need to document the sources.
+
+\end{enumerate}
+
+
+%\item  (50 points) Power of Convolutional Neural Network
+
+%In this exercise, you will develop a Convolutional Neural Network to classify all the digits (``0" to ``9") in the MNIST dataset. 
+%Train your convolutional neural network by filling in the missing functions in the provided ipython notebook. Report both the training and testing accuracies of your model. \\
+
+%Note: the MINIST dataset is provided with Tensorflow. The code to extract the entire dataset (60K training instances, 10K test instances) is provided for you in the ipython notebook.
+
+%This time, we will train our model to classify all ten digits in the MNIST dataset. The entire dataset can be downloaded here:
+
+%\textbf{http://yann.lecun.com/exdb/mnist/} \newline
+
+%The data comes in 4 gzipped files. Your program should preprocess the data in the following manner:
+%\begin{enumerate}
+%\item Unzip the training, test and labels files. \textbf{Note:} The first 16 bytes of the training and test images, and the first 8 bytes of the training and test labels are headers, so please ignore them.
+%\item Divide each image's pixel values by 255 so that they range from $0$ to $1$. This avoids numerical overflow in matrix multiplication.
+%\end{enumerate}
+
+\item (5 points) Extra Credit : 
+
+Discuss effective methods to select the Hyperparameters. Optimer hyperparameters like learning rate, mini-batch size and number of iteration. And model hyperparameter like the number of hidden layers/units. You are allowed to discuss among your classmates or consult Internet resources for this question, but you need to document the sources.
+
+%Writing your solution with Python Class type. And guideline provided in nnclass.py file.
+
+\end{enumerate}
+
+\end{document}
+
+
+
